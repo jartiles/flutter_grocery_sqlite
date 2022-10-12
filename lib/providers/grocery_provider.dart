@@ -8,19 +8,21 @@ class GroceryProvider extends ChangeNotifier {
   String groceryName = '';
   bool isLoading = false;
   List<GroceryModel> groceriesList = [];
+  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
   GroceryProvider() {
     getGroceries();
   }
 
   Future newGrocery() async {
-    isLoading = true;
-    notifyListeners();
     final newGrocery = GroceryModel(name: groceryName, qty: 0, qtyComplete: 0);
     final id = await DbProvider.db.insertNewGrocery(newGrocery);
     newGrocery.id = id;
     groceriesList.add(newGrocery);
-    isLoading = false;
+    if (listKey.currentState != null) {
+      final length = groceriesList.isEmpty ? 0 : groceriesList.length - 1;
+      listKey.currentState!.insertItem(length);
+    }
     notifyListeners();
     return newGrocery;
   }
@@ -31,12 +33,9 @@ class GroceryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future deleteGrocery(int id) async {
+  Future deleteGrocery(int index, int id) async {
     await DbProvider.db.deleteGrocery(id);
-    final index = groceriesList.indexWhere((grocery) => grocery.id == id);
-    if (index != -1) {
-      groceriesList.removeAt(index);
-      notifyListeners();
-    }
+    groceriesList.removeAt(index);
+    notifyListeners();
   }
 }

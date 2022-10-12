@@ -32,6 +32,13 @@ class _CreateForm extends StatelessWidget {
   const _CreateForm({Key? key, required this.groceryId}) : super(key: key);
   final int groceryId;
 
+  unFocusKeyboard(context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final formProvider = Provider.of<ProductFormProvider>(context);
@@ -73,11 +80,15 @@ class _CreateForm extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
+        //- Qty buttons
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             FloatingActionButton(
-              onPressed: () => formProvider.increaseDecrease(false),
+              onPressed: () {
+                unFocusKeyboard(context);
+                formProvider.increaseDecrease(false);
+              },
               mini: true,
               elevation: 0,
               child: const Icon(Icons.remove),
@@ -87,7 +98,10 @@ class _CreateForm extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             FloatingActionButton(
-              onPressed: () => formProvider.increaseDecrease(true),
+              onPressed: () {
+                unFocusKeyboard(context);
+                formProvider.increaseDecrease(true);
+              },
               mini: true,
               elevation: 0,
               child: const Icon(Icons.add),

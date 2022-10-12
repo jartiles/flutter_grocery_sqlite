@@ -24,6 +24,7 @@ class ProductsScreen extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as GroceryModel;
     final productsProvider = Provider.of<ProductProvider>(context);
     final products = productsProvider.currentProducts;
+    final listKey = productsProvider.listKey;
 
     return Scaffold(
       appBar: AppBar(
@@ -41,14 +42,14 @@ class ProductsScreen extends StatelessWidget {
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.75,
-            child: ListView.separated(
-              itemCount: products.length,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) => CardProducts(
-                product: products[index],
-              ),
-              separatorBuilder: (context, index) => const Divider(height: 1),
-            ),
+            child: products.isEmpty
+                ? const NoElements(title: 'Dont have products yet')
+                : AnimatedCardList(
+                    listItems: products,
+                    listKey: listKey,
+                    removeList: productsProvider.deleteProduct,
+                    type: 'product',
+                  ),
           ),
           const _TotalPrices(),
         ],

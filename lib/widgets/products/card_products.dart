@@ -22,13 +22,18 @@ class CardProducts extends StatelessWidget {
           },
         ),
         title: Text(product.name, style: const TextStyle(fontSize: 16)),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('${product.qty}', style: Theme.of(context).textTheme.caption),
-            const SizedBox(width: 30),
-            Text('\$${product.price}', style: const TextStyle(fontSize: 18)),
-          ],
+        trailing: SizedBox(
+          width: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${product.qty}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              Text('\$${product.price}', style: const TextStyle(fontSize: 18)),
+            ],
+          ),
         ),
       ),
     );

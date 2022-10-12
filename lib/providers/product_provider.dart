@@ -6,6 +6,7 @@ import 'db_provider.dart';
 
 class ProductProvider extends ChangeNotifier {
   List<ProductModel> currentProducts = [];
+  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
   double get totalUnchecked {
     if (currentProducts.isEmpty) return 0.0;
@@ -43,6 +44,10 @@ class ProductProvider extends ChangeNotifier {
     final id = await DbProvider.db.insertNewProduct(newProduct);
     newProduct.id = id;
     currentProducts.add(newProduct);
+    if (listKey.currentState != null) {
+      final length = currentProducts.isEmpty ? 0 : currentProducts.length - 1;
+      listKey.currentState!.insertItem(length);
+    }
     notifyListeners();
   }
 
@@ -66,5 +71,11 @@ class ProductProvider extends ChangeNotifier {
       await DbProvider.db.updateProductStatus(currentProducts[index]);
       notifyListeners();
     }
+  }
+
+  Future deleteProduct(int index, int id) async {
+    await DbProvider.db.deleteProduct(id);
+    currentProducts.removeAt(index);
+    notifyListeners();
   }
 }

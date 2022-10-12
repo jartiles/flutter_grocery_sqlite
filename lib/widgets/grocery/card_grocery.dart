@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 //- Theme
 import 'package:flutter_grocery_sqlite/theme/custom_theme.dart';
-//- Provider
-import 'package:flutter_grocery_sqlite/providers/grocery_provider.dart';
 //- Model
 import 'package:provider/provider.dart';
 import 'package:flutter_grocery_sqlite/models/grocery_model.dart';
@@ -51,8 +48,10 @@ class _GroceryFooter extends StatelessWidget {
             fillColor: CustomTheme.primary,
             child: const Icon(Icons.add, size: 16, color: Colors.white),
             onPressed: () async {
-              final productService =
-                  Provider.of<ProductProvider>(context, listen: false);
+              final productService = Provider.of<ProductProvider>(
+                context,
+                listen: false,
+              );
               productService.loadProducts(grocery.id!);
               Navigator.pushNamed(
                 context,
@@ -74,8 +73,6 @@ class _GroceryHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groceryProvider =
-        Provider.of<GroceryProvider>(context, listen: false);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -91,35 +88,6 @@ class _GroceryHeader extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF4294cf),
-              ),
-            ),
-            SizedBox(
-              width: 20,
-              height: 40,
-              child: SpeedDial(
-                icon: Icons.more_vert,
-                iconTheme: const IconThemeData(size: 50.0, color: Colors.grey),
-                activeIcon: Icons.close,
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                curve: Curves.bounceInOut,
-                direction: SpeedDialDirection.left,
-                children: [
-                  SpeedDialChild(
-                    child: const Icon(Icons.delete, color: Colors.red),
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                    onTap: () async {
-                      await groceryProvider.deleteGrocery(grocery.id!);
-                    },
-                  ),
-                  SpeedDialChild(
-                    child: const Icon(Icons.create, color: Colors.green),
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                    onTap: () => print('Pressed Read Later'),
-                  ),
-                ],
               ),
             ),
           ],

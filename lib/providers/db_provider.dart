@@ -90,7 +90,12 @@ class DbProvider {
     final db = await getDatabase;
     final res = await db.update('Products', productUpdate.toJson(),
         where: 'id = ?', whereArgs: [productUpdate.id]);
-    print(res);
+    return res;
+  }
+
+  Future<int> deleteProduct(int id) async {
+    final db = await getDatabase;
+    final res = await db.delete('Products', where: 'id = ?', whereArgs: [id]);
     return res;
   }
 }

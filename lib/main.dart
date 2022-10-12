@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/landing',
       routes: {
         '/landing': (context) => const LandingScreen(),
+        '/tutorial': (context) => const TutorialScreen(),
         '/grocery_list': (context) => const GroceryScreen(),
         '/products_list': (context) => const ProductsScreen(),
       },
