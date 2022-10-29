@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flutter_grocery_sqlite/providers/preferences_provider.dart';
+
 class SlideShow extends StatelessWidget {
   const SlideShow({
     super.key,
@@ -52,7 +54,10 @@ class _DontShow extends StatelessWidget {
   Widget build(BuildContext context) {
     final slideProvider = Provider.of<_SlideModel>(context, listen: false);
     return TextButton(
-      onPressed: () {},
+      onPressed: () async {
+        Preferences.dontShowSlide();
+        Navigator.pushReplacementNamed(context, '/grocery_list');
+      },
       child: Text(
         'Don\'t show again',
         style: TextStyle(color: slideProvider.getActiveColor),

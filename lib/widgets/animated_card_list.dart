@@ -19,6 +19,7 @@ class AnimatedCardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedList(
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(20),
       key: listKey,
       initialItemCount: listItems.length,

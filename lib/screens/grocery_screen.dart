@@ -29,7 +29,7 @@ class GroceryScreen extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: () => groceryProvider.getGroceries(),
         child: groceryList.isEmpty
-            ? const NoElements(title: 'Dont have lists yet')
+            ? const NoElements(title: 'Don\'t have lists')
             : AnimatedCardList(
                 listKey: listKey,
                 listItems: groceryList,
@@ -41,10 +41,6 @@ class GroceryScreen extends StatelessWidget {
 
   //- Create grocery
   showModal(BuildContext context) {
-    final groceryProvider = Provider.of<GroceryProvider>(
-      context,
-      listen: false,
-    );
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -53,30 +49,12 @@ class GroceryScreen extends StatelessWidget {
           children: [
             SimpleDialogOption(
               child: SizedBox(
-                height: 150,
+                height: 160,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFormField(
-                      onChanged: (value) => groceryProvider.groceryName = value,
-                      validator: (value) {
-                        return value != null && value.length > 4
-                            ? null
-                            : 'Nombre incorrecto';
-                      },
-                      decoration: InputDecorartions.inputDecoration(
-                        hintText: 'Party',
-                        labelText: 'Add a name to list',
-                      ),
-                    ),
-                    ElevatedButton(
-                      child: const Text('Save'),
-                      onPressed: () async {
-                        await groceryProvider.newGrocery();
-                        Navigator.pop(context);
-                      },
-                    ),
+                  children: const [
+                    _GroceryForm(),
                   ],
                 ),
               ),
@@ -84,6 +62,47 @@ class GroceryScreen extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _GroceryForm extends StatelessWidget {
+  const _GroceryForm({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final groceryProvider = Provider.of<GroceryProvider>(
+      context,
+      listen: false,
+    );
+    final formKey = groceryProvider.formKey;
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            onChanged: (value) => groceryProvider.groceryName = value,
+            validator: (value) {
+              return value != null && value.length >= 4
+                  ? null
+                  : 'Incorrect name. Minimum 4 characters';
+            },
+            decoration: InputDecorartions.inputDecoration(
+              hintText: 'Party',
+              labelText: 'Add a name to list',
+            ),
+          ),
+          ElevatedButton(
+            child: const Text('Save'),
+            onPressed: () async {
+              final resultValidation = formKey.currentState?.validate();
+              if (resultValidation == null || !resultValidation) return;
+              await groceryProvider.newGrocery();
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

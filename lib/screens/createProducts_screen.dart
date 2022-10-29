@@ -15,13 +15,17 @@ class CreateProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formProvider = Provider.of<ProductFormProvider>(context);
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-      child: SingleChildScrollView(
-        child: Form(
-          key: formProvider.productsFormKey,
-          child: _CreateForm(groceryId: groceryId),
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+            child: Form(
+              key: formProvider.productsFormKey,
+              child: _CreateForm(groceryId: groceryId),
+            ),
+          ),
         ),
       ),
     );

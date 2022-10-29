@@ -7,15 +7,35 @@ import 'package:flutter_grocery_sqlite/widgets/widgets.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter_grocery_sqlite/providers/product_provider.dart';
+import 'package:flutter_grocery_sqlite/providers/grocery_provider.dart';
 
-class ProductsScreen extends StatelessWidget {
+class ProductsScreen extends StatefulWidget {
   const ProductsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ProductsScreen> createState() => _ProductsScreenState();
+}
+
+class _ProductsScreenState extends State<ProductsScreen> {
   showCreateProduct(BuildContext context, int grocery) {
     showModalBottomSheet<void>(
       context: context,
       builder: (context) => CreateProductsScreen(groceryId: grocery),
     );
+  }
+
+  late GroceryProvider _myProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _myProvider = Provider.of<GroceryProvider>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    _myProvider.getGroceries();
+    super.dispose();
   }
 
   @override
@@ -38,12 +58,11 @@ class ProductsScreen extends StatelessWidget {
         ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * .75,
             child: products.isEmpty
-                ? const NoElements(title: 'Dont have products yet')
+                ? const NoElements(title: 'Don\'t have products')
                 : AnimatedCardList(
                     listItems: products,
                     listKey: listKey,
@@ -51,7 +70,7 @@ class ProductsScreen extends StatelessWidget {
                     type: 'product',
                   ),
           ),
-          const _TotalPrices(),
+          const Expanded(child: _TotalPrices()),
         ],
       ),
     );

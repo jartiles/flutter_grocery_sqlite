@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery_sqlite/widgets/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:flutter_grocery_sqlite/widgets/widgets.dart';
 
 class TutorialScreen extends StatelessWidget {
   const TutorialScreen({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class TutorialScreen extends StatelessWidget {
         childrens: [
           {
             'title': Text(
-              'Agrega una lista de compras solo con el titulo',
+              'Create a shopping list with just a title',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline5,
             ),
@@ -25,7 +26,7 @@ class TutorialScreen extends StatelessWidget {
           },
           {
             'title': Text(
-              'Agregar productos a tu lista',
+              'Add products to that list. With a name, price and quantity to buy',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline5,
             ),
@@ -36,7 +37,7 @@ class TutorialScreen extends StatelessWidget {
           },
           {
             'title': Text(
-              'Resta tu producto del total con el check',
+              'When purchasing the product click on the check box to subtract it from the total.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline5,
             ),
@@ -47,7 +48,7 @@ class TutorialScreen extends StatelessWidget {
           },
           {
             'title': Text(
-              'Elimina tu lista o productos haciendo swipe horizontal',
+              'Delete any item from your lists swiping to left or right',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline5,
             ),

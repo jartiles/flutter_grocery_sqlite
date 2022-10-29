@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutter_grocery_sqlite/providers/grocery_provider.dart';
-import 'package:flutter_grocery_sqlite/providers/productForm_provider.dart';
-import 'package:flutter_grocery_sqlite/providers/product_provider.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_grocery_sqlite/screens/screens.dart';
 import 'package:flutter_grocery_sqlite/theme/custom_theme.dart';
 //- Provider
 import 'package:provider/provider.dart';
+import 'package:flutter_grocery_sqlite/providers/providers.dart';
 
-void main() => runApp(MyProvider());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Preferences.init();
+  runApp(MyProvider());
+}
 
 class MyProvider extends StatelessWidget {
   @override
@@ -28,6 +30,10 @@ class MyProvider extends StatelessWidget {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       title: 'Grocery List',
       debugShowCheckedModeBanner: false,

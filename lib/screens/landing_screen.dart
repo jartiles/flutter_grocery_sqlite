@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_sqlite/widgets/grocery/abstract_painter.dart';
+import 'package:flutter_grocery_sqlite/providers/providers.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -14,18 +16,26 @@ class LandingScreen extends StatelessWidget {
         child: AbstractPainter(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [_Background(), _TitleCard()],
+            children: const [_Background(), Expanded(child: _TitleCard())],
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: screenHeight < 400
+          ? FloatingActionButtonLocation.miniEndDocked
+          : FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         elevation: 10,
-        onPressed: () => Navigator.pushReplacementNamed(context, '/tutorial'),
+        onPressed: () => validatePreferences(context),
         backgroundColor: const Color(0xFF24d0b8),
         child: const Icon(Icons.chevron_right, size: 50),
       ),
     );
+  }
+
+  validatePreferences(BuildContext context) async {
+    final showSlide = Preferences.showSlide;
+    final route = showSlide ? '/tutorial' : '/grocery_list';
+    Navigator.pushReplacementNamed(context, route);
   }
 }
 
@@ -40,6 +50,7 @@ class _TitleCard extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       width: double.infinity,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
             'Make your grocery list easy',
@@ -58,16 +69,14 @@ class _TitleCard extends StatelessWidget {
 }
 
 class _Background extends StatelessWidget {
-  const _Background({
-    Key? key,
-  }) : super(key: key);
+  const _Background({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Image(
-      height: 300,
+    return Image(
+      height: MediaQuery.of(context).size.height * .6,
       width: 300,
-      image: AssetImage('assets/background.png'),
+      image: const AssetImage('assets/background.png'),
     );
   }
 }

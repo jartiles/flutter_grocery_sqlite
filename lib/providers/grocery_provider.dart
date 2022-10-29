@@ -9,6 +9,7 @@ class GroceryProvider extends ChangeNotifier {
   bool isLoading = false;
   List<GroceryModel> groceriesList = [];
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   GroceryProvider() {
     getGroceries();
